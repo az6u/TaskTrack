@@ -15,6 +15,7 @@ def display_menu():
 
 def add_task(tasks):
     """Prompt the user for a task and add it to the task list."""
+    task = input("Enter a task: ")
     #TODO: Complete this function in Step 8.
     pass
 

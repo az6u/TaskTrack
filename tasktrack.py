@@ -15,15 +15,25 @@ def display_menu():
 
 def add_task(tasks):
     """Prompt the user for a task and add it to the task list."""
-    task = input("Enter a task: ")
-    #TODO: Complete this function in Step 8.
-    pass
+    task = input("Enter a task: ").strip()
+    if not task:
+        print("Please enter a task.")
+        return
+
+    tasks.append(task)
+    print(f"Task added: {task}")
 
 
 def view_tasks(tasks):
     """Display all tasks currently stored in the task list."""
-    #TODO: Complete this function in Step 9.
-    pass
+    if not tasks:
+        print("no task found.")
+        return
+
+    print("\nTasks:")
+
+    for number, task in enumerate(tasks, start=1):
+        print(f"{number}. {task}")
 
 
 def main():

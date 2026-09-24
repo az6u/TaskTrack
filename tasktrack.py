@@ -4,6 +4,11 @@ Author: Jayden Spraggins
 Course: CPS 310
 """
 
+from asyncio import tasks
+
+
+TASKS_FILE = "tasks.txt"
+
 
 def display_menu():
     """Display the available TaskTrack menu options."""
@@ -54,6 +59,25 @@ def main():
         else:
             print("Please enter 1, 2, or 3.")
 
+
+def load_tasks(filename):
+    """Load tasks from a file and return them as a list."""
+    tasks = []
+
+    try:
+        with open(filename, "r", encoding="utf-8") as file:
+            for line in file:
+                task = line.strip()
+
+                if not task:
+                    continue
+
+                tasks.append(task)
+    except FileNotFoundError:
+        # A new file may not have a task file yet.
+        return []
+
+    return tasks
 
 if __name__ == "__main__":
     main()

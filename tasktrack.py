@@ -20,9 +20,10 @@ def display_menu():
 
 def add_task(tasks):
     """Prompt the user for a task and add it to the task list."""
-    task = input("Enter a task: ").strip()
+    task = input("Enter a new task: ").strip()
+
     if not task:
-        print("Please enter a task.")
+        print("A task cannot be empty.")
         return
 
     tasks.append(task)

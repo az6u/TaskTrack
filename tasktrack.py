@@ -4,10 +4,10 @@ Author: Jayden Spraggins
 Course: CPS 310
 """
 
-from asyncio import tasks
+import os
 
 
-TASKS_FILE = "tasks.txt"
+TASKS_FILE = os.path.join(os.path.dirname(__file__), "tasks.txt")
 
 
 def display_menu():
@@ -29,6 +29,13 @@ def add_task(tasks):
     print(f"Task added: {task}")
 
 
+def save_tasks(tasks, filename):
+    """Save all tasks to a text file."""
+    with open(filename, "w", encoding="utf-8") as file:
+        for task in tasks:
+            file.write(f"{task}\n")
+
+
 def view_tasks(tasks):
     """Display all tasks currently stored in the task list."""
     if not tasks:
@@ -43,7 +50,7 @@ def view_tasks(tasks):
 
 def main():
     """Run the TaskTrack menu until the user chooses to exit."""
-    tasks = []
+    tasks = load_tasks(TASKS_FILE)
 
     while True:
         display_menu()
@@ -53,6 +60,7 @@ def main():
             view_tasks(tasks)
         elif choice == "2":
             add_task(tasks)
+            save_tasks(tasks, TASKS_FILE)
         elif choice == "3":
             print("Goodbye!")
             break

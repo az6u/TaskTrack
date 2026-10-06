@@ -15,7 +15,8 @@ def display_menu():
     print("\nTaskTrack")
     print("1. View tasks")
     print("2. Add task")
-    print("3. Exit")
+    print("3. Remove task")
+    print("4. Exit")
 
 
 def add_task(tasks):
@@ -35,6 +36,27 @@ def save_tasks(tasks, filename):
     with open(filename, "w", encoding="utf-8") as file:
         for task in tasks:
             file.write(f"{task}\n")
+
+
+def remove_task(tasks, selection):
+    """Remove a task from the list when the user selects a valid number."""
+    if not tasks:
+        print("No tasks available to remove.")
+        return False
+
+    try:
+        task_number = int(selection)
+    except ValueError:
+        print("Please enter a valid task number.")
+        return False
+
+    if task_number < 1 or task_number > len(tasks):
+        print("Task number out of range.")
+        return False
+
+    removed_task = tasks.pop(task_number - 1)
+    print(f"Task removed: {removed_task}")
+    return True
 
 
 def view_tasks(tasks):
@@ -63,10 +85,15 @@ def main():
             add_task(tasks)
             save_tasks(tasks, TASKS_FILE)
         elif choice == "3":
+            view_tasks(tasks)
+            selection = input("Which task should be removed? ")
+            if remove_task(tasks, selection):
+                save_tasks(tasks, TASKS_FILE)
+        elif choice == "4":
             print("Goodbye!")
             break
         else:
-            print("Please enter 1, 2, or 3.")
+            print("Please enter 1, 2, 3, or 4.")
 
 
 def load_tasks(filename):

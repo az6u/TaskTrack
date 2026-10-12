@@ -9,11 +9,6 @@ TASKS_FILE = "tasks.txt"
 
 def display_menu():
     """Display the available TaskTrack menu options."""
-    print("\nTaskTrack")
-    print("1. View tasks")
-    print("2. Add task")
-    print("3. Remove task")
-    print("4. Exit")
     print("\nTaskTrack Menu")
     print("1. View Tasks")
     print("2. Add Task")
@@ -53,7 +48,11 @@ def remove_task(tasks, selection):
         print("Task number out of range.")
         return False
 
-    removed_task = tasks.pop(task_number - 1)
+    removed_task = remove_task_by_number(tasks, task_number)
+    if removed_task is None:
+        print("Task number out of range.")
+        return False
+
     print(f"Task removed: {removed_task}")
     return True
 
@@ -69,31 +68,15 @@ def view_tasks(tasks):
         print(f"{number}. {task}")
 
 
-def remove_task(tasks):
-    """Prompt the user to select and remove a task.
+def remove_task_by_number(tasks, task_number):
+    """Remove a task by its displayed number and return the removed task.
 
-    Return True when a task is removed and False otherwise.
+    Return None when the task number is outside the valid range.
     """
-    if not tasks:
-        print("No tasks are available to remove.")
-        return False
-
-    view_tasks(tasks)
-    selection = input("Enter the number of the task to remove: ").strip()
-
-    if not selection.isdigit():
-        print("Please enter a valid task number.")
-        return False
-
-    task_number = int(selection)
-
     if task_number < 1 or task_number > len(tasks):
-        print("That task number does not exist.")
-        return False
+        return None
 
-    removed_task = tasks.pop(task_number - 1)
-    print(f'Removed task: "{removed_task}"')
-    return True
+    return tasks.pop(task_number - 1)
 
 
 def load_tasks(filename):
@@ -138,33 +121,9 @@ def main():
             if remove_task(tasks, selection):
                 save_tasks(tasks, TASKS_FILE)
         elif choice == "4":
-            if remove_task(tasks):
-                save_tasks(tasks, TASKS_FILE)
-        elif choice == "4":
             print("Goodbye!")
             break
         else:
-            print("Please enter 1, 2, 3, or 4.")
-
-
-def load_tasks(filename):
-    """Load tasks from a file and return them as a list."""
-    tasks = []
-
-    try:
-        with open(filename, "r", encoding="utf-8") as file:
-            for line in file:
-                task = line.strip()
-
-                if not task:
-                    continue
-
-                tasks.append(task)
-    except FileNotFoundError:
-        # A new file may not have a task file yet.
-        return []
-
-    return tasks
             print("Please enter 1, 2, 3, or 4.")
 
 

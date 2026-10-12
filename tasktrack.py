@@ -9,6 +9,11 @@ TASKS_FILE = "tasks.txt"
 
 def display_menu():
     """Display the available TaskTrack menu options."""
+    print("\nTaskTrack")
+    print("1. View tasks")
+    print("2. Add task")
+    print("3. Remove task")
+    print("4. Exit")
     print("\nTaskTrack Menu")
     print("1. View Tasks")
     print("2. Add Task")
@@ -29,6 +34,27 @@ def add_task(tasks):
 
     tasks.append(task)
     print("Task added successfully.")
+    return True
+
+
+def remove_task(tasks, selection):
+    """Remove a task from the list when the user selects a valid number."""
+    if not tasks:
+        print("No tasks available to remove.")
+        return False
+
+    try:
+        task_number = int(selection)
+    except ValueError:
+        print("Please enter a valid task number.")
+        return False
+
+    if task_number < 1 or task_number > len(tasks):
+        print("Task number out of range.")
+        return False
+
+    removed_task = tasks.pop(task_number - 1)
+    print(f"Task removed: {removed_task}")
     return True
 
 
@@ -107,12 +133,38 @@ def main():
             if add_task(tasks):
                 save_tasks(tasks, TASKS_FILE)
         elif choice == "3":
+            view_tasks(tasks)
+            selection = input("Which task should be removed? ")
+            if remove_task(tasks, selection):
+                save_tasks(tasks, TASKS_FILE)
+        elif choice == "4":
             if remove_task(tasks):
                 save_tasks(tasks, TASKS_FILE)
         elif choice == "4":
             print("Goodbye!")
             break
         else:
+            print("Please enter 1, 2, 3, or 4.")
+
+
+def load_tasks(filename):
+    """Load tasks from a file and return them as a list."""
+    tasks = []
+
+    try:
+        with open(filename, "r", encoding="utf-8") as file:
+            for line in file:
+                task = line.strip()
+
+                if not task:
+                    continue
+
+                tasks.append(task)
+    except FileNotFoundError:
+        # A new file may not have a task file yet.
+        return []
+
+    return tasks
             print("Please enter 1, 2, 3, or 4.")
 
 
